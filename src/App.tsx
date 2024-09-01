@@ -12,7 +12,7 @@ function App() {
 	return (
 		<>
 			<div className="h-[100vh] flex justify-center items-center">
-				<div className="bg-[#ddd] max-w-4xl rounded-xl">
+				<div className="bg-[#ddd] rounded-xl">
 					<div>{audioFile ? <AudioFile src={audioFile} /> : <FileInput handleFile={handleFile} />}</div>
 				</div>
 			</div>

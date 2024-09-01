@@ -1,0 +1,63 @@
+#range_input {
+	height: 48px;
+	background: #aaa;
+	cursor: e-resize;
+	border-radius: 0 0 4px 4px;
+}
+
+#range_input input,
+#progress_indicator input {
+	display: none;
+}
+
+#range_input .range-slider__range {
+	background: #bbb;
+	border: 3px solid #328afd;
+	cursor: grab;
+}
+
+#range_input .range-slider__thumb {
+	width: 6px;
+	height: 48px;
+	border-width: 12px 2.5px;
+	border-color: #328afd;
+	border-style: solid;
+	background: #bbb;
+	border-radius: 0;
+}
+
+/* 
+#range_input .range-slider__thumb[data-lower] {
+	border-width: 3px 0 3px 5px;
+	border-radius: 4px 0 0 4px;
+	border-left-color: #333;
+}
+
+#range_input .range-slider__thumb[data-upper] {
+	border-width: 3px 5px 3px 0;
+	border-right-color: #333;
+	border-radius: 0 4px 4px 0;
+}
+*/
+
+#progress_indicator {
+	height: 12px;
+	background: none;
+	cursor: e-resize;
+	border-radius: 4px 4px 0 0;
+}
+
+#progress_indicator .range-slider__thumb[data-lower] {
+	width: 0;
+	display: none;
+}
+
+/* #progress_indicator .range-slider__range {
+	display: none;
+} */
+
+#progress_indicator .range-slider__thumb[data-upper] {
+	width: 0;
+	height: 12px;
+	border-radius: 0;
+}

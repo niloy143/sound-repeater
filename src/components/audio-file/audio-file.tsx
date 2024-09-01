@@ -1,52 +1,71 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+
+// @ts-expect-error not a typescript package
+import RangeSlider from "react-range-slider-input";
+import "react-range-slider-input/dist/style.css";
+import "./styles.css";
 
 type Props = {
 	src: string;
 };
 
-const progressLimit = 1000;
+const MAX = 1000;
+const MIN = 0;
+const RANGE_INPUT_ID = "range_input";
+const INDICATOR_ID = "progress_indicator";
 
 export default function AudioFile({ src }: Props) {
 	const getProgress = () => {
 		const audio = audioRef.current;
-		return audio ? (audio.currentTime / audio.duration) * progressLimit : 0;
+		return audio ? (audio.currentTime / audio.duration) * MAX : 0;
 	};
 
 	const audioRef = useRef<HTMLAudioElement>(null);
-	const [isPlaying, setIsPlaying] = useState(false);
 	const [progress, setProgress] = useState(getProgress());
+	const [range, setRange] = useState([MIN, MAX / 2]);
+
+	useEffect(() => {
+		if (progress < range[0] || progress > range[1]) {
+			setProgress(range[0]);
+			const audio = audioRef.current;
+			if (audio) {
+				audioRef.current.currentTime = (range[0] / 1000) * audio.duration;
+			}
+		}
+	}, [progress, range]);
 
 	return (
-		<>
-			<audio ref={audioRef} src={src} className="p-2" controls onTimeUpdate={() => setProgress(getProgress())} />
-			<div className="p-8">
+		<div>
+			<div className="px-[20px] pt-[20px] flex justify-center">
+				<audio ref={audioRef} src={src} className="p-2" controls onTimeUpdate={() => setProgress(getProgress())} />
+			</div>
+			<div className="p-[20px] w-[1040px]">
 				<div>
-					<input
-						type="range"
-						value={progress}
-						min={0}
-						max={progressLimit}
-						className="w-[200px] h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
-						onChange={(e) => {
+					<RangeSlider
+						id={INDICATOR_ID}
+						min={MIN}
+						max={MAX}
+						value={[0, progress]}
+						thumbsDisabled={[true, false]}
+						rangeSlideDisabled={true}
+						onInput={(values: number[]) => {
 							const audio = audioRef.current;
 							if (audio) {
-								audioRef.current.currentTime = (Number(e.target.value) / 1000) * audio.duration;
+								audioRef.current.currentTime = (Number(values[1]) / 1000) * audio.duration;
 							}
 						}}
 					/>
+					<RangeSlider
+						id={RANGE_INPUT_ID}
+						min={MIN}
+						max={MAX}
+						value={range}
+						onInput={(values: number[]) => {
+							setRange(values);
+						}}
+					/>
 				</div>
-				<button
-					type="button"
-					className="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700 my-5"
-					onClick={() => {
-						if (isPlaying) audioRef.current?.pause();
-						else audioRef.current?.play();
-						setIsPlaying(!isPlaying);
-					}}
-				>
-					{isPlaying ? "Pause" : "Play"}
-				</button>
 			</div>
-		</>
+		</div>
 	);
 }
