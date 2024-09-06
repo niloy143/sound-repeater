@@ -9,15 +9,7 @@ function App() {
 		setAudioFile(URL.createObjectURL(file));
 	};
 
-	return (
-		<>
-			<div className="h-[100vh] flex justify-center items-center">
-				<div className="bg-[#ddd] rounded-xl">
-					<div>{audioFile ? <AudioFile src={audioFile} /> : <FileInput handleFile={handleFile} />}</div>
-				</div>
-			</div>
-		</>
-	);
+	return audioFile ? <AudioFile src={audioFile} /> : <FileInput handleFile={handleFile} />;
 }
 
 export default App;

@@ -35,11 +35,9 @@ export default function AudioFile({ src }: Props) {
 	}, [progress, range]);
 
 	return (
-		<div>
-			<div className="px-[20px] pt-[20px] flex justify-center">
-				<audio ref={audioRef} src={src} className="p-2" controls onTimeUpdate={() => setProgress(getProgress())} />
-			</div>
-			<div className="p-[20px] w-[1040px]">
+		<div className="flex flex-col justify-center h-[100vh] items-center gap-3 sm:gap-5">
+			<audio className="w-full px-2 sm:px-5" ref={audioRef} src={src} controls onTimeUpdate={() => setProgress(getProgress())} />
+			<div className="px-2 sm:px-5 w-full">
 				<div>
 					<RangeSlider
 						id={INDICATOR_ID}
